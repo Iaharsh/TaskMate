@@ -7,6 +7,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 import android.content.Intent
 import androidx.activity.viewModels
+import com.example.etharaai.data.local.entities.UserEntity
+import com.example.etharaai.data.local.entities.TaskEntity
 import androidx.recyclerview.widget.LinearLayoutManager
 
 @AndroidEntryPoint
@@ -22,13 +24,15 @@ class TaskListActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         val sharedPref = getSharedPreferences("ethara_prefs", android.content.Context.MODE_PRIVATE)
-        val userRole = sharedPref.getString("user_role", "Member")
+        val userRole = sharedPref.getString("user_role", "Member") ?: "Member"
+        val userId = sharedPref.getString("user_id", "") ?: ""
         val isAdmin = userRole == "Admin"
         
         binding.userRoleTag.text = if (isAdmin) "👑 Admin" else "👤 Member"
 
         val projectId = intent.getStringExtra("PROJECT_ID")
         viewModel.setProjectId(projectId)
+        viewModel.setUserContext(userId, userRole)
 
         adapter = TaskAdapter(
             tasks = emptyList(),
@@ -38,23 +42,40 @@ class TaskListActivity : AppCompatActivity() {
             onDelete = { task ->
                 viewModel.deleteTask(task.id)
             },
-            onReassign = { task ->
-                showReassignDialog(task)
+            onEdit = { task ->
+                val intent = Intent(this, AddTaskActivity::class.java)
+                intent.putExtra("PROJECT_ID", projectId)
+                intent.putExtra("TASK_ID", task.id)
+                intent.putExtra("TASK_TITLE", task.title)
+                intent.putExtra("TASK_DESC", task.description)
+                intent.putExtra("TASK_PRIORITY", task.priority)
+                intent.putExtra("TASK_STATUS", task.status)
+                intent.putExtra("TASK_ASSIGNED_TO", task.assignedTo)
+                intent.putExtra("TASK_PROJECT_ID", task.projectId)
+                intent.putExtra("TASK_DUE_DATE", task.dueDate)
+                intent.putExtra("TASK_OWNER_ID", task.ownerId)
+                startActivity(intent)
             },
             isAdmin = isAdmin
         )
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.taskRecyclerView.adapter = adapter
 
+        var allTasks = emptyList<TaskEntity>()
+        
         viewModel.tasks.observe(this) { tasks ->
-            adapter.updateTasks(tasks)
-            binding.emptyTasksState.visibility = if (tasks.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
+            allTasks = tasks
+            filterTasks(tasks, binding.filterChipGroup.checkedChipId)
             
             // Update chips (Mock counts for now)
             binding.chipAll.text = "All  ${tasks.size}"
             binding.chipTodo.text = "Todo  ${tasks.count { it.status == "Todo" }}"
             binding.chipInProgress.text = "In Progress  ${tasks.count { it.status == "Doing" }}"
             binding.chipDone.text = "Done  ${tasks.count { it.status == "Done" }}"
+        }
+
+        binding.filterChipGroup.setOnCheckedChangeListener { _, checkedId ->
+            filterTasks(allTasks, checkedId)
         }
 
         if (!isAdmin) {
@@ -72,19 +93,14 @@ class TaskListActivity : AppCompatActivity() {
         }
     }
 
-    private fun showReassignDialog(task: com.example.etharaai.data.local.entities.TaskEntity) {
-        val projectId = task.projectId
-        viewModel.getProjectMembers(projectId).observe(this) { members ->
-            val memberNames = members.map { it.name }.toTypedArray()
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Reassign Task")
-                .setItems(memberNames) { _, which ->
-                    val selectedMember = members[which]
-                    viewModel.reassignTask(task.id, selectedMember.id, selectedMember.name)
-                    android.widget.Toast.makeText(this, "Task Reassigned to ${selectedMember.name}", android.widget.Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton("Cancel", null)
-                .show()
+    private fun filterTasks(tasks: List<TaskEntity>, checkedId: Int) {
+        val filtered = when (checkedId) {
+            binding.chipTodo.id -> tasks.filter { it.status == "Todo" }
+            binding.chipInProgress.id -> tasks.filter { it.status == "Doing" }
+            binding.chipDone.id -> tasks.filter { it.status == "Done" }
+            else -> tasks
         }
+        adapter.updateTasks(filtered)
+        binding.emptyTasksState.visibility = if (filtered.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
     }
 }

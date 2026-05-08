@@ -67,35 +67,52 @@
                 android:textColor="#009688"
                 android:textStyle="bold" />
         </LinearLayout>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginTop="16dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/markDoneButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_weight="1"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:text="Mark Done"
                 android:textAllCaps="false"
                 app:backgroundTint="#4CAF50"
                 app:cornerRadius="8dp"
                 android:textSize="12sp" />
 
-            <ImageButton
-                android:id="@+id/deleteTaskButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_delete_btn"
-                android:src="@android:drawable/ic_menu_delete"
-                app:tint="#F44336"
-                android:padding="8dp"
-                android:scaleType="fitCenter" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/editTaskButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_delete_btn"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="#3F51B5"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter" />
+
+                <ImageButton
+                    android:id="@+id/deleteTaskButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_delete_btn"
+                    android:src="@android:drawable/ic_menu_delete"
+                    app:tint="#F44336"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

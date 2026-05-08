@@ -2,6 +2,7 @@ package com.example.etharaai.ui.projects
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.example.etharaai.data.local.entities.ProjectEntity
 import com.example.etharaai.domain.repository.ProjectRepository
@@ -17,7 +18,16 @@ class ProjectViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    val projects = projectRepository.getProjectsWithMembers().asLiveData()
+    private val _userContext = androidx.lifecycle.MutableLiveData<Pair<String, String>>()
+
+    fun setUserContext(userId: String, role: String) {
+        _userContext.value = userId to role
+    }
+
+    val projects = _userContext.switchMap { (userId, role) ->
+        if (role == "Member") projectRepository.getProjectsWithAssignedTasks(userId).asLiveData()
+        else projectRepository.getProjectsWithMembers(userId).asLiveData()
+    }
 
     fun createProject(name: String, description: String) {
         viewModelScope.launch {
@@ -25,7 +35,7 @@ class ProjectViewModel @Inject constructor(
                 id = UUID.randomUUID().toString(),
                 name = name,
                 description = description,
-                ownerId = "admin" // Default for now
+                ownerId = _userContext.value?.first ?: "admin"
             )
             projectRepository.addProject(project)
         }

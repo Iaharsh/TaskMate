@@ -23,9 +23,11 @@ class ProjectListActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         val sharedPref = getSharedPreferences("ethara_prefs", android.content.Context.MODE_PRIVATE)
-        val userRole = sharedPref.getString("user_role", "Member")
+        val userRole = sharedPref.getString("user_role", "Member") ?: "Member"
+        val userId = sharedPref.getString("user_id", "") ?: ""
         val isAdmin = userRole == "Admin"
         
+        viewModel.setUserContext(userId, userRole)
         binding.userRoleTag.text = if (isAdmin) "👑 Admin" else "👤 Member"
 
         adapter = ProjectAdapter(

@@ -36,7 +36,7 @@ class ProjectAdapter(
         members.forEach { member ->
             val chip = com.google.android.material.chip.Chip(holder.itemView.context).apply {
                 text = member.name
-                isCloseIconVisible = isAdmin
+                isCloseIconVisible = false // admin removing off
                 setOnCloseIconClickListener {
                     onRemoveMember(projectWithMembers, member.id)
                 }

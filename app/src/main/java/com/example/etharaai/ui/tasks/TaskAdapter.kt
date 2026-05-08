@@ -11,7 +11,7 @@ class TaskAdapter(
     private var tasks: List<TaskEntity>,
     private val onStatusUpdate: (TaskEntity, String) -> Unit,
     private val onDelete: (TaskEntity) -> Unit,
-    private val onReassign: (TaskEntity) -> Unit,
+    private val onEdit: (TaskEntity) -> Unit,
     private val isAdmin: Boolean = true
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -29,25 +29,15 @@ class TaskAdapter(
         holder.binding.taskStatusText.text = task.status
         holder.binding.taskPriorityText.text = task.priority
         holder.binding.taskAssigneeText.text = if (task.assigneeName != null) "👤 ${task.assigneeName}" else "👤 Unassigned"
-        
-        if (isAdmin) {
-            holder.binding.taskAssigneeText.setOnClickListener {
-                onReassign(task)
-            }
-        }
 
-        // Role based visibility
-        if (!isAdmin) {
-            holder.binding.markDoneButton.visibility = View.GONE
-            holder.binding.deleteTaskButton.visibility = View.GONE
-        } else {
-            // Hide "Mark Done" if already done
-            if (task.status == "Done") {
-                holder.binding.markDoneButton.visibility = View.GONE
-            } else {
-                holder.binding.markDoneButton.visibility = View.VISIBLE
-            }
-            holder.binding.deleteTaskButton.visibility = View.VISIBLE
+        // Manage tasks: Everyone can mark as done and delete
+        holder.binding.markDoneButton.visibility = if (task.status == "Done") View.GONE else View.VISIBLE
+        holder.binding.deleteTaskButton.visibility = View.VISIBLE
+        
+        // Edit button for admin
+        holder.binding.editTaskButton.visibility = if (isAdmin) View.VISIBLE else View.GONE
+        holder.binding.editTaskButton.setOnClickListener {
+            onEdit(task)
         }
 
         holder.binding.markDoneButton.setOnClickListener {

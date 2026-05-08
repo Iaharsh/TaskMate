@@ -22,6 +22,11 @@ class DashboardActivity : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPref = getSharedPreferences("ethara_prefs", android.content.Context.MODE_PRIVATE)
+        val userRole = sharedPref.getString("user_role", "Member") ?: "Member"
+        val userId = sharedPref.getString("user_id", "") ?: ""
+        
+        viewModel.setUserContext(userId, userRole)
         updateGreeting()
 
         viewModel.totalTasks.observe(this) { total ->
@@ -66,8 +71,6 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, TaskListActivity::class.java))
         }
         
-        val sharedPref = getSharedPreferences("ethara_prefs", android.content.Context.MODE_PRIVATE)
-        val userRole = sharedPref.getString("user_role", "Member")
 
         if (userRole == "Member") {
             binding.createProjectButton.visibility = android.view.View.GONE

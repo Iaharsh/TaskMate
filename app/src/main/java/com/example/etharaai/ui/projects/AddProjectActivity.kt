@@ -18,6 +18,11 @@ class AddProjectActivity : AppCompatActivity() {
         binding = ActivityAddProjectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPref = getSharedPreferences("ethara_prefs", android.content.Context.MODE_PRIVATE)
+        val userRole = sharedPref.getString("user_role", "Member") ?: "Member"
+        val userId = sharedPref.getString("user_id", "") ?: ""
+        viewModel.setUserContext(userId, userRole)
+
         binding.backButton.setOnClickListener {
             finish()
         }

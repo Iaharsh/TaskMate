@@ -13,5 +13,6 @@ data class TaskEntity(
     val assigneeName: String?,
     val status: String, // Todo, Doing, Done
     val dueDate: Long,
-    val priority: String // Low, Medium, High
+    val priority: String, // Low, Medium, High
+    val ownerId: String
 )
