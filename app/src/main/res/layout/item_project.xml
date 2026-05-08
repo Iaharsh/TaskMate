@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/projectNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Portfolio"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A" />
+
+        <TextView
+            android:id="@+id/projectOwnerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner: Admin"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_role_tag"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="2dp"
+            android:text="👑 Admin"
+            android:textColor="#B8860B"
+            android:textSize="11sp"
+            android:layout_marginTop="8dp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/memberChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewTasksButton"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="View Tasks"
+                android:textAllCaps="false"
+                app:backgroundTint="@null"
+                android:background="@drawable/bg_button_gradient"
+                app:cornerRadius="8dp"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addMemberButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:text="+ Member"
+                android:textAllCaps="false"
+                android:textColor="#009688"
+                app:strokeColor="#009688"
+                app:cornerRadius="8dp"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:text="🗑️"
+                android:textSize="16sp"
+                app:rippleColor="#33F44336" />
+        </LinearLayout>
+
+        <!-- Add Member Input Section (Hidden by default) -->
+        <LinearLayout
+            android:id="@+id/addMemberSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+            
+            <EditText
+                android:id="@+id/memberEmailInput"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:hint="Member's email"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_input_field"
+                android:textSize="13sp"
+                android:inputType="textEmailAddress" />
+            
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirmAddMemberButton"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:text="Add"
+                android:textAllCaps="false"
+                app:backgroundTint="#009688"
+                app:cornerRadius="8dp"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/closeAddMemberButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="8dp"
+                android:text="❌"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
