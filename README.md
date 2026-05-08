@@ -14,27 +14,27 @@ Most task managers are either too simple for teams or too complex for individual
 ### 🔐 Advanced Authentication System
 - **Role-Based Login**: Integrated selection for Admin/Member roles during both registration and login to ensure correct permission mapping.
 - **Data Persistence**: Sessions and user preferences are securely managed using `SharedPreferences` and `Room`.
-- **Dynamic Greetings**: Personalized dashboard greetings based on the time of day and the logged-in user's name.
+- **Admin Isolation (Multi-Tenancy)**: Each Admin operates in their own private workspace. Projects and tasks created by one Admin are completely hidden from others.
 
 ### 🛡️ Role-Based Access Control (RBAC)
 - **Admin Capabilities**:
-    - Complete Project Lifecycle Management (Create/Delete).
-    - Team Management: Add members via email and remove them using the **Member Chip System**.
-    - Task Orchestration: Create, Delete, and **Dynamically Reassign** tasks to any project member.
+    - **Total Data Ownership**: Complete Project Lifecycle Management (Create/Delete) for their own workspace.
+    - **Team Orchestration**: Add members via email and manage team composition.
+    - **Precision Management**: Full capability to Edit, Update, and Delete tasks (Title, Description, Priority, Status, Assignee).
 - **Member Capabilities**:
-    - Read-only Project Overview.
-    - Personal Task Tracking: View tasks assigned to them and track overall project progress.
-    - Focused UI: Non-essential administrative buttons (Delete, Add, Reassign) are automatically hidden to reduce cognitive load.
+    - **Strict Data Privacy**: Members only see projects and tasks that have been explicitly assigned to them by an Admin.
+    - **Action-Oriented Dashboard**: Dashboard counts (Todo, Overdue, etc.) reflect only the member's assigned workload.
+    - **Simplified UI**: Non-essential administrative controls are hidden to maintain focus on task execution.
 
-### 📊 Project & Team Orchestration
-- **Intuitive Organization**: Group tasks into high-level projects with dedicated descriptions.
-- **Visual Team Mapping**: Project members are displayed as interactive Chips, providing a clear view of team composition at a glance.
-- **Smart Counting**: Live task status tracking (Todo, Doing, Done) with automated count updates on the main dashboard.
+### 📊 Project & Dashboard Analytics
+- **Workspace Filtering**: Real-time filtering of tasks using status-based Chips (All, Todo, Doing, Done).
+- **Visual Team Mapping**: Project members are displayed as interactive Chips.
+- **Live Counting**: Automated dashboard updates for task status tracking and overdue monitoring.
 
 ### 📝 Precision Task Management
-- **Detailed Attributes**: Every task supports Title, Description, Priority (Low/Medium/High), and Status.
-- **Assignment Engine**: Direct task-to-member assignment during creation.
-- **Interactive Lifecycle**: Smooth transitions between task states with real-time database updates.
+- **Full Edit Suite**: Admins can update any task attribute at any time.
+- **Assignment Engine**: Direct task-to-member assignment with support for "Unassigned" states.
+- **Optimized UI**: Delete and Edit actions are intuitively positioned at the bottom-right of task cards for quick access.
 
 ---
 
